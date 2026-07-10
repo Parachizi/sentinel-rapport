@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SENTINEL — Rapport</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#fff;color:#000;-webkit-font-smoothing:antialiased}
+.watermark{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;display:flex;align-items:center;justify-content:center;opacity:.05}
+.watermark svg{width:70%;height:auto;max-width:500px}
+.container{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:48px 20px 60px}
+
+/* header */
+.hdr{text-align:center;margin-bottom:32px}
+.hdr h1{font-size:28px;font-weight:800;letter-spacing:4px;text-transform:uppercase;margin-bottom:2px}
+.hdr h1 em{font-style:normal;font-weight:200;display:block;font-size:11px;letter-spacing:6px;color:#888;margin-top:4px}
+.hdr .sub{font-size:10px;letter-spacing:3px;color:#999;text-transform:uppercase;margin-top:6px}
+.hdr .dt{font-size:11px;color:#bbb;margin-top:2px}
+
+/* alerte */
+.alerte{background:#000;color:#fff;padding:12px 16px;margin-bottom:24px;font-size:13px;font-weight:600;letter-spacing:.5px;display:flex;align-items:center;gap:10px;border-radius:8px}
+.alerte .ico{font-size:18px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:28px}
+.st{border:1px solid #e0e0e0;padding:12px 4px;text-align:center;border-radius:8px}
+.st .n{font-size:24px;font-weight:700;line-height:1.1}
+.st .l{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:4px}
+
+/* sections */
+.sec{margin-bottom:28px}
+.stitle{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding-bottom:8px;border-bottom:2px solid #000;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.stitle .cnt{font-weight:300;color:#999;font-size:11px}
+
+/* cards */
+.c{border:1px solid #e8e8e8;padding:12px 14px;margin-bottom:6px;border-radius:8px;transition:.15s}
+.c:active{background:#f5f5f5}
+.c .t{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.c .nm{font-size:15px;font-weight:600}
+.c .tg{font-size:9px;padding:2px 8px;border-radius:4px;letter-spacing:1px;text-transform:uppercase;border:1px solid;font-weight:600}
+.tg-b{border-color:#000;color:#000}
+.tg-g{border-color:#c00;color:#c00}
+.tg-a{border-color:#333;color:#333}
+.tg-r{border-color:#c00;color:#c00;background:#fff0f0}
+.c .d{font-size:12px;color:#666;margin-top:4px}
+.c .x{font-size:11px;color:#999;margin-top:2px}
+.c .w{font-size:11px;color:#c00;font-weight:600;margin-top:3px}
+
+/* corridors */
+.cr{border-left:4px solid #000;padding:10px 14px;margin-bottom:6px;background:#fafafa;border-radius:0 8px 8px 0}
+.cr .r{font-size:14px;font-weight:600}
+.cr .a{font-size:16px;font-weight:700;color:#c00;margin-top:1px}
+.cr .m{font-size:11px;color:#888;margin-top:1px}
+.cr .w{font-size:10px;color:#c00;font-weight:600;margin-top:2px}
+.cr-high{border-left-color:#c00;background:#fff5f5}
+
+/* footer */
+.ft{text-align:center;padding-top:24px;border-top:1px solid #e0e0e0;margin-top:8px}
+.ft .b{font-size:10px;letter-spacing:3px;color:#888;text-transform:uppercase}
+.ft .h{font-size:9px;color:#bbb;margin-top:6px;font-family:monospace}
+</style>
+</head>
+<body>
+
+<div class="watermark">
+<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="600" fill="#fff"/>
+  <rect y="0" width="900" height="150" fill="#ed1c24"/>
+  <rect y="450" width="900" height="150" fill="#ed1c24"/>
+  <path d="M450 180 L470 240 L540 240 L485 280 L510 340 L450 300 L390 340 L415 280 L360 240 L430 240 Z" fill="#00853b"/>
+</svg>
+</div>
+
+<div class="container">
+
+  <div class="hdr">
+    <h1>SENTINEL<em>Renseignement Stratégique</em></h1>
+    <div class="sub">Division Intelligence — Mansa Aurelius</div>
+    <div class="dt">10 Juillet 2026</div>
+  </div>
+
+  <div class="alerte"><span class="ico">!</span> Corridors financiers actifs — Volume total identifié : <strong>$151,4M</strong></div>
+
+  <div class="stats">
+    <div class="st"><div class="n">20</div><div class="l">Banques</div></div>
+    <div class="st"><div class="n" style="color:#c00">13</div><div class="l">Généraux</div></div>
+    <div class="st"><div class="n">9</div><div class="l">Agents</div></div>
+    <div class="st"><div class="n">8</div><div class="l">Zones</div></div>
+  </div>
+
+  <!-- CORRIDORS -->
+  <div class="sec">
+    <div class="stitle">Corridors Financiers <span class="cnt">8 flux</span></div>
+    <div class="cr cr-high">
+      <div class="r">Bank Leumi (IL) → HSBC Genève (CH)</div>
+      <div class="a">$50 000 000</div>
+      <div class="m">SWIFT · 2 901 km</div>
+    </div>
+    <div class="cr cr-high">
+      <div class="r">Israel Discount Bank (IL) → UBS Zurich (CH)</div>
+      <div class="a">$35 000 000</div>
+      <div class="m">SWIFT · 2 793 km</div>
+    </div>
+    <div class="cr" style="border-left-color:#c00;background:#fff5f5">
+      <div class="r" style="color:#c00">Bank Hapoalim (IL) → Ecobank CI</div>
+      <div class="a">$22 500 000</div>
+      <div class="m">SWIFT · 5 006 km</div>
+      <div class="w">Corridor CI actif</div>
+    </div>
+    <div class="cr" style="border-left-color:#c00;background:#fff5f5">
+      <div class="r" style="color:#c00">Bank Leumi (IL) → Afriland First Bank CI</div>
+      <div class="a">$15 000 000</div>
+      <div class="m">SWIFT · 5 006 km</div>
+      <div class="w">Corridor CI actif</div>
+    </div>
+    <div class="cr" style="border-left-color:#c00;background:#fff0f0">
+      <div class="r" style="color:#c00">Bank Leumi (IL) → NSIA Banque CI</div>
+      <div class="a">$12 000 000</div>
+      <div class="m">CRYPTO USDT→FCFA · 5 007 km</div>
+      <div class="w">! Non traçable SWIFT</div>
+    </div>
+    <div class="cr">
+      <div class="r">Israel Discount Bank (IL) → SGBCI</div>
+      <div class="a">$8 200 000</div>
+      <div class="m">SWIFT</div>
+    </div>
+    <div class="cr" style="border-left-color:#c00">
+      <div class="r">Bank Hapoalim (IL) → Bridge Bank CI</div>
+      <div class="a">$5 500 000</div>
+      <div class="m">SWIFT</div>
+      <div class="w">Corridor CI actif</div>
+    </div>
+    <div class="cr">
+      <div class="r">Bank of Jerusalem → Orabank CI</div>
+      <div class="a">$3 200 000</div>
+      <div class="m">SWIFT</div>
+    </div>
+  </div>
+
+  <!-- BANQUES ISRAEL -->
+  <div class="sec">
+    <div class="stitle">Banques Israéliennes <span class="cnt">8</span></div>
+    <div class="c">
+      <div class="t"><div class="nm">Bank Leumi</div><span class="tg tg-b">LEUMI</span></div>
+      <div class="d">SWIFT LUMIILIT · Tel Aviv · $500M+ USD/EUR</div>
+      <div class="x">→ HSBC $50M · Afriland $15M · NSIA $12M (crypto)</div>
+    </div>
+    <div class="c">
+      <div class="t"><div class="nm">Bank Hapoalim</div><span class="tg tg-b">HAPOALIM</span></div>
+      <div class="d">SWIFT POALILIT · Tel Aviv · $750M+ USD/CHF</div>
+      <div class="x">→ Ecobank $22.5M · Bridge $5.5M</div>
+    </div>
+    <div class="c">
+      <div class="t"><div class="nm">Israel Discount Bank</div><span class="tg tg-b">DISCOUNT</span></div>
+      <div class="d">SWIFT IDBLILIT · Tel Aviv · $250M+ USD</div>
+      <div class="x">→ UBS $35M · SGBCI $8.2M</div>
+    </div>
+    <div class="c"><div class="t"><div class="nm">Mizrahi Tefahot</div><span class="tg tg-b">MIZRAHI</span></div><div class="d">Ramat Gan · SWIFT MZABILIT</div></div>
+    <div class="c"><div class="t"><div class="nm">First International Bank</div><span class="tg tg-b">FIBI</span></div><div class="d">Tel Aviv · SWIFT FIRBILIT</div></div>
+    <div class="c">
+      <div class="t"><div class="nm">Bank of Jerusalem</div><span class="tg tg-b">JLM</span></div>
+      <div class="d">Jérusalem · SWIFT JERSILIT</div>
+      <div class="x">→ Orabank $3.2M</div>
+    </div>
+    <div class="c"><div class="t"><div class="nm">Union Bank of Israel</div><span class="tg tg-b">UNION</span></div><div class="d">Tel Aviv · SWIFT UNONILIT</div></div>
+    <div class="c"><div class="t"><div class="nm">Massad Bank</div><span class="tg tg-b">MASSAD</span></div><div class="d">Jérusalem · SWIFT MSADILIT</div></div>
+  </div>
+
+  <!-- CORRESPONDANTS -->
+  <div class="sec">
+    <div class="stitle">Correspondants <span class="cnt">12</span></div>
+    <div class="c"><div class="t"><div class="nm">HSBC Genève</div><span class="tg tg-b">CH</span></div><div class="d">$50M reçu de Leumi · Hub Europe</div></div>
+    <div class="c"><div class="t"><div class="nm">UBS Zurich</div><span class="tg tg-b">CH</span></div><div class="d">$35M reçu de Discount · Trésorerie</div></div>
+    <div class="c"><div class="t"><div class="nm">BNP Paribas Paris</div><span class="tg tg-b">FR</span></div><div class="d">Hub Europe de l'Ouest</div></div>
+    <div class="c"><div class="t"><div class="nm">Standard Chartered London</div><span class="tg tg-b">UK</span></div><div class="d">Corridor Asie-Afrique-Europe</div></div>
+    <div class="c"><div class="t"><div class="nm">Deutsche Bank Frankfurt</div><span class="tg tg-b">DE</span></div><div class="d">Hub Europe centrale</div></div>
+    <div class="c" style="border-left:3px solid #c00">
+      <div class="t"><div class="nm" style="color:#c00">Banques CI (7)</div><span class="tg tg-r">CI</span></div>
+      <div class="d">Afriland · Ecobank · SGBCI · NSIA · Bridge · BICICI · Orabank</div>
+      <div class="x">Total reçu : $66.4M (SWIFT + CRYPTO)</div>
+    </div>
+  </div>
+
+  <!-- GENERAUX -->
+  <div class="sec">
+    <div class="stitle">Généraux & État-Major <span class="cnt">13</span></div>
+    <div class="c">
+      <div class="t"><div class="nm">Aviv Kochavi</div><span class="tg tg-g">RAMATKAL</span></div>
+      <div class="d">Chef d'état-major · Kirya Tel Aviv</div>
+      <div class="x">Banques à 0.6km (Hapoalim) · 1.5km (Leumi)</div>
+    </div>
+    <div class="c">
+      <div class="t"><div class="nm">Herzi Halevi</div><span class="tg tg-g">ADJOINT</span></div>
+      <div class="d">Renseignement · Hapoalim à 0.44km</div>
+    </div>
+    <div class="c">
+      <div class="t"><div class="nm">Daniel Hagari</div><span class="tg tg-g">PORTE-PAROLE</span></div>
+      <div class="d">Union Bank à 0.57km</div>
+    </div>
+    <div class="c">
+      <div class="t"><div class="nm">Aharon Haliva</div><span class="tg tg-g">AMAN</span></div>
+      <div class="d">Chef Renseignement · Hapoalim à 0.78km</div>
+    </div>
+    <div class="c">
+      <div class="t"><div class="nm">Cdt Unité 8200</div><span class="tg tg-g">RENS.ÉLEC.</span></div>
+      <div class="d">Hapoalim à 0.48km</div>
+    </div>
+    <div class="c"><div class="t"><div class="nm">Eli Sharvit</div><span class="tg tg-g">MARINE</span></div><div class="d">Base Haïfa</div></div>
+    <div class="c"><div class="t"><div class="nm">Tomer Bar</div><span class="tg tg-g">IAF</span></div><div class="d">Force aérienne</div></div>
+    <div class="c" style="border-left:3px solid #c00">
+      <div class="t"><div class="nm" style="color:#c00">Officier R (Tat-Aluf)</div><span class="tg tg-r">MISSION</span></div>
+      <div class="d">Opérations spéciales · Déplacement Abidjan</div>
+      <div class="w">Contact banquier Plateau identifié</div>
+    </div>
+    <div class="c" style="border-left:3px solid #c00">
+      <div class="t"><div class="nm" style="color:#c00">Attaché militaire Afrique</div><span class="tg tg-r">ABIDJAN</span></div>
+      <div class="d">Aluf-mishne G · Diplomatie sécurité</div>
+      <div class="w">0.43km NSIA · 0.52km Orabank · 0.66km Bridge</div>
+    </div>
+    <div class="c" style="border-left:3px solid #c00">
+      <div class="t"><div class="nm" style="color:#c00">Consultant sécurité AO</div><span class="tg tg-r">OBSERVÉ</span></div>
+      <div class="d">Tat-Aluf M · Zone 4 Abidjan · Réunion discrète</div>
+    </div>
+    <div class="c"><div class="t"><div class="nm">Agent Mossad Europe</div><span class="tg tg-g">BERLIN</span></div><div class="d">Station Europe</div></div>
+    <div class="c"><div class="t"><div class="nm">Ex-Unité 504</div><span class="tg tg-g">RETR.</span></div><div class="d">Renseignement humain</div></div>
+  </div>
+
+  <!-- AGENTS -->
+  <div class="sec">
+    <div class="stitle">Agents & Cellules <span class="cnt">9</span></div>
+    <div class="c" style="border-left:3px solid #c00">
+      <div class="t"><div class="nm" style="color:#c00">RÉSEAU PLATEAU</div><span class="tg tg-r">FINANCE</span></div>
+      <div class="d">Yossi (financier) · Rachel (analyste)</div>
+      <div class="w">0m des banques CI · Bureau couverture</div>
+    </div>
+    <div class="c"><div class="t"><div class="nm">CELLULE COCODY</div><span class="tg tg-a">ACTIF</span></div><div class="d">Omar (chef) · David (traitant) · Thuraya</div></div>
+    <div class="c"><div class="t"><div class="nm">CELLULE PORT</div><span class="tg tg-a">LOGISTIQUE</span></div><div class="d">Michael · Conteneur FR-4487 · Hub maritime</div></div>
+    <div class="c"><div class="t"><div class="nm">CELLULE GENÈVE</div><span class="tg tg-a">FINANCE</span></div><div class="d">Shlomo · 5 comptes UBS · 0m HSBC</div></div>
+    <div class="c"><div class="t"><div class="nm">STATION BERLIN</div><span class="tg tg-a">MOUSSAD</span></div><div class="d">Agent · Réseau européen</div></div>
+    <div class="c"><div class="t"><div class="nm">RÉSEAU PARIS</div><span class="tg tg-a">DIPLO</span></div><div class="d">0m BNP Paribas · Couverture diplomatique</div></div>
+    <div class="c"><div class="t"><div class="nm">CELLULE MARCORY</div><span class="tg tg-a">ACTIF</span></div><div class="d">0.87m Bridge Bank</div></div>
+    <div class="c"><div class="t"><div class="nm">RÉSEAU YOPOUGON</div><span class="tg tg-a">OBS.</span></div><div class="d">Zone couverture populaire</div></div>
+    <div class="c"><div class="t"><div class="nm">RÉSEAU NORD</div><span class="tg tg-a">SURV.</span></div><div class="d">Korhogo · Corridor nord</div></div>
+  </div>
+
+  <!-- ZONES -->
+  <div class="sec">
+    <div class="stitle">Zones <span class="cnt">8</span></div>
+    <div class="c"><div class="t"><div class="nm">Plateau Financier</div><span class="tg tg-b">800m</span></div><div class="d">Banques CI · Ambassade · Réseau Plateau</div></div>
+    <div class="c"><div class="t"><div class="nm">Cocody</div><span class="tg tg-a">1km</span></div><div class="d">Cellule Cocody · Résidentiel · Réunions</div></div>
+    <div class="c"><div class="t"><div class="nm">Port Bouët</div><span class="tg tg-a">1.2km</span></div><div class="d">Conteneur FR-4487 · Hub maritime</div></div>
+    <div class="c"><div class="t"><div class="nm">Ambassade Israël</div><span class="tg tg-g">300m</span></div><div class="d">Périmètre diplomatique · Plateau</div></div>
+    <div class="c"><div class="t"><div class="nm">Sofitel Ivoire</div><span class="tg tg-r">200m</span></div><div class="d">Attaché militaire descendu ici</div></div>
+    <div class="c"><div class="t"><div class="nm">Marcory</div><span class="tg tg-a">700m</span></div><div class="d">Cellule Marcory · Proximité Bridge Bank</div></div>
+    <div class="c"><div class="t"><div class="nm">Kirya (QG Tsahal)</div><span class="tg tg-g">1.5km</span></div><div class="d">QG Tel Aviv · État-major + banques</div></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="ft">
+    <div class="b">Mansa Aurelius · Division Intelligence</div>
+    <div class="h">Rapport SENTINEL v2 · 10 juillet 2026</div>
+    <div class="h" style="margin-top:4px">42 cibles · 8 corridors · Jean Regnard Engine v3</div>
+  </div>
+
+</div>
+</body>
+</html>
