@@ -3,72 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>PHOENIX — Intelligence Dashboard</title>
+<title>PHOENIX — Intelligence Hub</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#fff;color:#000;-webkit-font-smoothing:antialiased}
-.watermark{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.04}
-.watermark svg{width:100%;height:100%}
-.container{position:relative;z-index:1;max-width:100%;margin:0 auto;padding:12px 12px 40px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+body{background:#fff;color:#000;-webkit-font-smoothing:antialiased}
+.wm{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.04}
+.wm svg{width:100%;height:100%}
+.c{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:10px 10px 30px}
 
-/* header */
-.hdr{text-align:center;margin-bottom:16px;padding:16px 0 12px;border-bottom:2px solid #000}
-.hdr h1{font-size:22px;font-weight:800;letter-spacing:3px;text-transform:uppercase}
-.hdr h1 em{font-style:normal;font-weight:200;display:block;font-size:9px;letter-spacing:4px;color:#888;margin-top:2px}
-.hdr .dt{font-size:10px;color:#999;margin-top:2px}
+/* HEADER */
+.hd{text-align:center;padding:12px 0 10px;border-bottom:2px solid #000;margin-bottom:12px}
+.hd h1{font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+.hd h1 em{font-style:normal;font-weight:200;display:block;font-size:9px;letter-spacing:4px;color:#888;margin-top:2px}
+.hd .dt{font-size:9px;color:#999;margin-top:2px}
+.hd .live{display:inline-block;width:6px;height:6px;background:#0c0;border-radius:50%;margin-right:4px;vertical-align:middle;animation:pulse 2s infinite}
+@keyframes pulse{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
 
-/* stats row */
-.sr{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:12px}
-.sb{border:1px solid #ddd;padding:6px 2px;text-align:center;border-radius:6px}
-.sb .n{font-size:16px;font-weight:700}
-.sb .l{font-size:7px;text-transform:uppercase;letter-spacing:.5px;color:#888;margin-top:2px}
+/* STATS BAR */
+.sr{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:10px}
+.sb{border:1px solid #ddd;padding:5px 2px;text-align:center;border-radius:5px}
+.sb .n{font-size:15px;font-weight:700}
+.sb .l{font-size:7px;text-transform:uppercase;letter-spacing:.5px;color:#888}
 
-/* alert bar */
-.ab{background:#000;color:#fff;padding:8px 12px;margin-bottom:12px;font-size:11px;font-weight:600;border-radius:6px;display:flex;align-items:center;gap:8px}
-.ab .ico{font-size:14px}
+/* ALERT */
+.ab{background:#000;color:#fff;padding:7px 10px;margin-bottom:10px;font-size:10px;font-weight:600;border-radius:5px;display:flex;align-items:center;gap:6px}
 
-/* map */
-#map{height:340px;border:1px solid #ddd;border-radius:8px;margin-bottom:12px}
+/* SEARCH + FILTERS */
+.tb{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
+.tb input{flex:1;min-width:120px;padding:7px 8px;border:1px solid #ccc;border-radius:4px;font-size:12px}
+.tb select{padding:7px 6px;border:1px solid #ccc;border-radius:4px;font-size:11px;background:#fff}
+.tb button{padding:7px 10px;border:1px solid #000;background:#000;color:#fff;border-radius:4px;font-size:10px;font-weight:600;cursor:pointer}
 
-/* sections */
-.sec{margin-bottom:16px}
-.st{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding-bottom:5px;border-bottom:1.5px solid #000;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
-.st .c{font-weight:300;color:#999;font-size:10px}
+/* MAP */
+#m{height:280px;border:1px solid #ddd;border-radius:6px;margin-bottom:10px}
 
-/* cards */
-.ct{border:1px solid #e8e8e8;padding:8px 10px;margin-bottom:4px;border-radius:6px}
-.ct .th{display:flex;justify-content:space-between;align-items:center;margin-bottom:1px}
-.ct .nm{font-size:13px;font-weight:600}
-.ct .tg{font-size:8px;padding:1px 6px;border-radius:3px;letter-spacing:.5px;text-transform:uppercase;border:1px solid;font-weight:600}
-.tg-b{border-color:#000;color:#000}
-.tg-r{border-color:#c00;color:#c00;background:#fff0f0}
-.tg-g{border-color:#c00;color:#c00}
-.tg-a{border-color:#333;color:#333}
-.tg-green{border-color:#080;color:#080}
-.ct .d{font-size:11px;color:#666;margin-top:2px}
-.ct .x{font-size:10px;color:#999;margin-top:1px}
-.ct .w{font-size:10px;color:#c00;font-weight:600;margin-top:2px}
+/* TABS */
+.tabs{display:flex;gap:2px;margin-bottom:8px;flex-wrap:wrap}
+.tab{padding:6px 10px;border:1px solid #ddd;border-radius:4px 4px 0 0;font-size:10px;font-weight:600;cursor:pointer;background:#f5f5f5;color:#666;transition:.15s}
+.tab.act{background:#000;color:#fff;border-color:#000}
+.tab:hover{background:#e0e0e0}
 
-/* corridor cards */
-.cr{border-left:3px solid #000;padding:7px 10px;margin-bottom:4px;background:#fafafa;border-radius:0 6px 6px 0}
-.cr .rn{font-size:12px;font-weight:600}
-.cr .am{font-size:13px;font-weight:700;color:#c00;margin-top:1px}
-.cr .md{font-size:10px;color:#888;margin-top:1px}
-.cr .wa{font-size:9px;color:#c00;font-weight:600;margin-top:1px}
-.cr-crit{border-left-color:#c00;background:#fff5f5}
+/* SECTION */
+.sec{display:none;margin-bottom:12px}
+.sec.act{display:block}
+.st{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding-bottom:4px;border-bottom:1.5px solid #000;margin-bottom:6px}
 
-/* footer */
-.ft{text-align:center;padding-top:16px;border-top:1px solid #ddd;margin-top:4px}
-.ft .b{font-size:9px;letter-spacing:2px;color:#888;text-transform:uppercase}
-.ft .h{font-size:8px;color:#bbb;margin-top:4px;font-family:monospace}
+/* CARDS */
+.cd{border:1px solid #e8e8e8;padding:7px 9px;margin-bottom:3px;border-radius:5px;cursor:pointer;transition:.1s}
+.cd:hover{background:#fafafa}
+.cd .th{display:flex;justify-content:space-between;align-items:center}
+.cd .nm{font-size:12px;font-weight:600}
+.cd .tg{font-size:7px;padding:1px 5px;border-radius:3px;text-transform:uppercase;border:1px solid;font-weight:600;white-space:nowrap}
+.tgb{border-color:#000;color:#000}
+.tgr{border-color:#c00;color:#c00;background:#fff0f0}
+.tgg{border-color:#c00;color:#c00}
+.tga{border-color:#333;color:#333}
+.cd .d{font-size:10px;color:#666;margin-top:2px}
+.cd .x{font-size:9px;color:#999;margin-top:1px}
+.cd .w{font-size:9px;color:#c00;font-weight:600;margin-top:2px}
+.cd .mt{font-size:9px;color:#666;margin-top:2px}
+
+/* CORRIDORS */
+.cr{border-left:3px solid #000;padding:6px 9px;margin-bottom:3px;background:#fafafa;border-radius:0 5px 5px 0}
+.cr .rn{font-size:11px;font-weight:600}
+.cr .am{font-size:12px;font-weight:700;color:#c00}
+.cr .md{font-size:9px;color:#888}
+.cr .wa{font-size:9px;color:#c00;font-weight:600}
+.crc{border-left-color:#c00;background:#fff5f5}
+
+/* BGL CARD */
+.bgl .nm{font-size:11px}
+.bgl .d{font-size:9px}
+.bgl .w{font-size:9px}
+.bgl .mt{font-size:8px;color:#666;margin-top:2px}
+
+/* FOOTER */
+.ft{text-align:center;padding-top:12px;border-top:1px solid #ddd;margin-top:4px}
+.ft .b{font-size:8px;letter-spacing:2px;color:#888;text-transform:uppercase}
+.ft .h{font-size:7px;color:#bbb;margin-top:3px;font-family:monospace}
+
+/* MODAL */
+.mo{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:999;justify-content:center;align-items:center}
+.mo.act{display:flex}
+.mc{background:#fff;border-radius:10px;padding:20px;max-width:400px;width:90%;max-height:80vh;overflow-y:auto;position:relative}
+.mc h2{font-size:16px;font-weight:700;margin-bottom:4px}
+.mc .cl{position:absolute;top:8px;right:12px;font-size:22px;cursor:pointer;color:#999}
+.mc .cl:hover{color:#000}
+.mc .ml{font-size:11px;color:#666;margin-top:4px;line-height:1.5}
+.mc .mt{font-size:10px;color:#999;margin-top:8px}
+.mc .b{border:1px solid #000;padding:8px;margin-top:8px;background:#f5f5f5;border-radius:5px;font-size:10px;line-height:1.5;max-height:200px;overflow-y:auto}
 </style>
 </head>
 <body>
 
-<div class="watermark">
-<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+<div class="wm">
+<svg viewBox="0 0 900 600">
   <rect width="900" height="600" fill="#fff"/>
   <rect y="0" width="900" height="150" fill="#ed1c24"/>
   <rect y="450" width="900" height="150" fill="#ed1c24"/>
@@ -76,261 +107,260 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </svg>
 </div>
 
-<div class="container">
+<div class="c">
 
-<div class="hdr">
-  <h1>PHOENIX<em>Sentinel Intelligence Dashboard</em></h1>
-  <div class="dt">10 Juillet 2026 · Mansa Aurelius — Division Intelligence</div>
+<div class="hd">
+  <h1>PHOENIX<em>Sentinel Intelligence Hub</em></h1>
+  <div class="dt"><span class="live"></span>10 Juillet 2026 · Mansa Aurelius — Division Intelligence</div>
 </div>
 
-<div class="ab"><span class="ico">!</span> 66400000 USD vers CI · 1 canal(aux) CRYPTO non traçable(s)</div>
+<div class="ab">$66,400,000 USD vers Côte d'Ivoire · $12,000,000 via CRYPTO non traçable · 8 corridors actifs</div>
 
 <div class="sr">
   <div class="sb"><div class="n">8</div><div class="l">Banques IL</div></div>
-  <div class="sb"><div class="n">7</div><div class="l">Banques CI</div></div>
+  <div class="sb"><div class="n" style="color:#c00">7</div><div class="l">Banques CI</div></div>
   <div class="sb"><div class="n" style="color:#c00">13</div><div class="l">Généraux</div></div>
   <div class="sb"><div class="n">4</div><div class="l">Agents</div></div>
-  <div class="sb"><div class="n">9</div><div class="l">Corridors</div></div>
+  <div class="sb"><div class="n" style="color:#c00">42</div><div class="l">Cibles</div></div>
 </div>
 
-<div id="map"></div>
-
-<!-- CORRIDORS -->
-<div class="sec">
-  <div class="st">Corridors Financiers <span class="c">9 flux · $154,600,000</span></div>
-    <div class="cr ">
-      <div class="rn">Bank Leumi (Israel) → HSBC Geneva (Switzerland)</div>
-      <div class="am">$50,000,000</div>
-      <div class="md">SWIFT · 2902 km</div>
-      
-    </div>
-    <div class="cr ">
-      <div class="rn">Israel Discount Bank (Israel) → UBS Zurich (Switzerland)</div>
-      <div class="am">$35,000,000</div>
-      <div class="md">SWIFT · 2793 km</div>
-      
-    </div>
-    <div class="cr cr-crit">
-      <div class="rn">Bank Hapoalim (Israel) → Ecobank CI (Côte d'Ivoire)</div>
-      <div class="am">$22,500,000</div>
-      <div class="md">SWIFT · 5007 km</div>
-      <div class="wa">Corridor CI actif</div>
-    </div>
-    <div class="cr cr-crit">
-      <div class="rn">Bank Leumi (Israel) → Afriland First Bank CI (Côte d'Ivoire)</div>
-      <div class="am">$15,000,000</div>
-      <div class="md">SWIFT · 5007 km</div>
-      <div class="wa">Corridor CI actif</div>
-    </div>
-    <div class="cr cr-crit">
-      <div class="rn">Bank Leumi (Israel) → NSIA Banque CI (Côte d'Ivoire)</div>
-      <div class="am">$12,000,000</div>
-      <div class="md">CRYPTO · 5007 km</div>
-      <div class="wa">⚠ Corridor CI + CRYPTO non traçable</div>
-    </div>
-    <div class="cr cr-crit">
-      <div class="rn">Israel Discount Bank (Israel) → SGBCI (Côte d'Ivoire)</div>
-      <div class="am">$8,200,000</div>
-      <div class="md">SWIFT · 5005 km</div>
-      <div class="wa">Corridor CI actif</div>
-    </div>
-    <div class="cr cr-crit">
-      <div class="rn">Bank Hapoalim (Israel) → Bridge Bank CI (Côte d'Ivoire)</div>
-      <div class="am">$5,500,000</div>
-      <div class="md">SWIFT · 5007 km</div>
-      <div class="wa">Corridor CI actif</div>
-    </div>
-    <div class="cr cr-crit">
-      <div class="rn">Bank of Jerusalem (Israel) → Orabank CI (Côte d'Ivoire)</div>
-      <div class="am">$3,200,000</div>
-      <div class="md">SWIFT · 5028 km</div>
-      <div class="wa">Corridor CI actif</div>
-    </div>
+<!-- SEARCH + FILTERS -->
+<div class="tb">
+  <input id="q" placeholder="Rechercher nom, ville, pays..." oninput="filt()">
+  <select id="ft" onchange="filt()">
+    <option value="">Tous</option>
+    <option value="banque">Banques</option>
+    <option value="general">Généraux</option>
+    <option value="agent">Agents</option>
+    <option value="corridor">Corridors</option>
+    <option value="ci">Côte d'Ivoire</option>
+    <option value="critique">CRITIQUE</option>
+    <option value="crypto">CRYPTO</option>
+  </select>
 </div>
 
-<!-- GENERAUX -->
-<div class="sec">
-  <div class="st">Généraux & État-Major <span class="c">13</span></div>
-    <div class="ct" style="border-left:3px solid #c00">
-      <div class="th"><div class="nm">Général (Général) Aviv Kochavi</div><span class="tg tg-r">Ramatkal (Ch</span></div>
-      <div class="d">Commandement</div>
-      <div class="x">Réunion cabinet de sécurité · Contact UBS Genève identifié</div>
-    </div>
-    <div class="ct" >
-      <div class="th"><div class="nm">Général Herzi Halevi</div><span class="tg tg-g">Ramatkal adj</span></div>
-      <div class="d">Renseignement</div>
-      <div class="x">ACTIF</div>
-    </div>
-    <div class="ct" >
-      <div class="th"><div class="nm">Tat-Général (Général de brigad</div><span class="tg tg-g">Porte-parole</span></div>
-      <div class="d">Communication</div>
-      <div class="x">Déclaration publique sur opérations à l'étranger</div>
-    </div>
-    <div class="ct" >
-      <div class="th"><div class="nm">Général-mishne Eli Sharvit</div><span class="tg tg-g">Chef Marine </span></div>
-      <div class="d">Marine</div>
-      <div class="x">ACTIF</div>
-    </div>
-    <div class="ct" >
-      <div class="th"><div class="nm">Général Tomer Bar</div><span class="tg tg-g">Chef Force a</span></div>
-      <div class="d">IAF</div>
-      <div class="x">ACTIF</div>
-    </div>
-    <div class="ct" >
-      <div class="th"><div class="nm">Général Aharon Haliva</div><span class="tg tg-g">Chef Aman (R</span></div>
-      <div class="d">Renseignement</div>
-      <div class="x">Planification opération spéciale CI</div>
-    </div>
-    <div class="ct" style="border-left:3px solid #c00">
-      <div class="th"><div class="nm">Tat-Général R</div><span class="tg tg-r">Officier de </span></div>
-      <div class="d">Opérations spéciales</div>
-      <div class="x">Voyage Abidjan — contact banquier · RDV Plateau avec conseiller financier</div>
-    </div>
-    <div class="ct" >
-      <div class="th"><div class="nm">Général-mishne Y</div><span class="tg tg-g">Commandant u</span></div>
-      <div class="d">Renseignement électronique</div>
-      <div class="x">ACTIF</div>
-    </div>
-    <div class="ct" >
-      <div class="th"><div class="nm">Sgan-Général D</div><span class="tg tg-g">Agent Mossad</span></div>
-      <div class="d">Renseignement</div>
-      <div class="x">ACTIF</div>
-    </div>
-    <div class="ct" >
-      <div class="th"><div class="nm">Général K</div><span class="tg tg-g">Commandant r</span></div>
-      <div class="d">Opérations</div>
-      <div class="x">ACTIF</div>
-    </div>
-    <div class="ct" style="border-left:3px solid #c00">
-      <div class="th"><div class="nm">Général-mishne G</div><span class="tg tg-r">Attaché mili</span></div>
-      <div class="d">Diplomatie</div>
-      <div class="x">Arrivée Abidjan — hôtel Sofitel Ivoire · Contact Groupe Al-Makki — Cocody</div>
-    </div>
-    <div class="ct" style="border-left:3px solid #c00">
-      <div class="th"><div class="nm">Tat-Général M</div><span class="tg tg-r">Consultant s</span></div>
-      <div class="d">Conseil</div>
-      <div class="x">Présence Zone 4 — réunion discrète</div>
-    </div>
-    <div class="ct" >
-      <div class="th"><div class="nm">Général N</div><span class="tg tg-g">Ex-responsab</span></div>
-      <div class="d">Renseignement humain</div>
-      <div class="x">Retraité</div>
-    </div>
+<div id="m"></div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab act" onclick="sw(0)">Corridors</div>
+  <div class="tab" onclick="sw(1)">Généraux</div>
+  <div class="tab" onclick="sw(2)">Agents</div>
+  <div class="tab" onclick="sw(3)">Banques IL</div>
+  <div class="tab" onclick="sw(4)">Liens BG</div>
 </div>
 
-<!-- AGENTS -->
-<div class="sec">
-  <div class="st">Agents & Cellules <span class="c">4</span></div>
-    <div class="ct">
-      <div class="th"><div class="nm">CELLULE COCODY</div><span class="tg tg-a">Abidjan Coco</span></div>
-      <div class="d">Omar (Chef de cellule) · David (Officier traita)</div><div class="x">Toyota Land Cruiser noir — immat XXXXXX · Téléphone satellitaire Thuraya</div>
-    </div>
-    <div class="ct">
-      <div class="th"><div class="nm">RÉSEAU PLATEAU</div><span class="tg tg-r">Abidjan Plat</span></div>
-      <div class="d">Yossi (Agent financier) · Rachel (Analyste)</div><div class="x">Bureau commercial couverture — Plateau</div>
-    </div>
-    <div class="ct">
-      <div class="th"><div class="nm">CELLULE PORT</div><span class="tg tg-a">Port Bouët</span></div>
-      <div class="d">Michael (Logistique port)</div><div class="x">Conteneur FR-4487 — équipement comm</div>
-    </div>
-    <div class="ct">
-      <div class="th"><div class="nm">CELLULE GENÈVE</div><span class="tg tg-r">Genève — Fin</span></div>
-      <div class="d">Shlomo (Gestionnaire de)</div><div class="x">Accès UBS — 5 comptes opérationnels</div>
-    </div>
+<!-- TAB 0: CORRIDORS -->
+<div class="sec act" id="t0">
+  <div class="st">Corridors Financiers · 8 flux · $151,400,000</div>
+  <div id="cr-list"></div>
 </div>
 
-<div class="sec">
-  <div class="st">Banques Israël <span class="c">8</span></div>
-    <div class="ct">
-      <div class="th"><div class="nm">Bank Leumi</div><span class="tg tg-b">Tel Aviv</span></div>
-      <div class="x">USD $500,000,000 · EUR $300,000,000</div>
-    </div>
-    <div class="ct">
-      <div class="th"><div class="nm">Bank Hapoalim</div><span class="tg tg-b">Tel Aviv</span></div>
-      <div class="x">USD $750,000,000 · CHF $200,000,000</div>
-    </div>
-    <div class="ct">
-      <div class="th"><div class="nm">Mizrahi Tefahot</div><span class="tg tg-b">Ramat Gan</span></div>
-      <div class="x"></div>
-    </div>
-    <div class="ct">
-      <div class="th"><div class="nm">Israel Discount Bank</div><span class="tg tg-b">Tel Aviv</span></div>
-      <div class="x">USD $250,000,000</div>
-    </div>
-    <div class="ct">
-      <div class="th"><div class="nm">First International Bank</div><span class="tg tg-b">Tel Aviv</span></div>
-      <div class="x"></div>
-    </div>
-    <div class="ct">
-      <div class="th"><div class="nm">Bank of Jerusalem</div><span class="tg tg-b">Jerusalem</span></div>
-      <div class="x"></div>
-    </div>
-    <div class="ct">
-      <div class="th"><div class="nm">Union Bank of Israel</div><span class="tg tg-b">Tel Aviv</span></div>
-      <div class="x"></div>
-    </div>
-    <div class="ct">
-      <div class="th"><div class="nm">Massad Bank</div><span class="tg tg-b">Jerusalem</span></div>
-      <div class="x"></div>
-    </div>
+<!-- TAB 1: GENERAUX -->
+<div class="sec" id="t1">
+  <div class="st">Généraux & État-Major · 13</div>
+  <div id="gen-list"></div>
+</div>
+
+<!-- TAB 2: AGENTS -->
+<div class="sec" id="t2">
+  <div class="st">Agents & Cellules · 4</div>
+  <div id="agent-list"></div>
+</div>
+
+<!-- TAB 3: BANQUES -->
+<div class="sec" id="t3">
+  <div class="st">Banques Israéliennes · 8</div>
+  <div id="bank-list"></div>
+</div>
+
+<!-- TAB 4: BG LINKS -->
+<div class="sec" id="t4">
+  <div class="st">Liens Banquiers-Généraux · 43 corrélations</div>
+  <div id="bgl-list"></div>
 </div>
 
 <div class="ft">
   <div class="b">Mansa Aurelius · Division Intelligence</div>
   <div class="h">PHOENIX v1 · Jean Regnard Engine v3 · Haversine Tracking</div>
-  <div class="h">42 cibles · 9 corridors · $154,600,000 identifiés</div>
+  <div class="h">42 cibles surveillées · $151,400,000 identifiés</div>
 </div>
 
-</div><!-- container -->
+</div>
+
+<!-- MODAL -->
+<div class="mo" id="mo" onclick="this.classList.remove('act')">
+  <div class="mc" onclick="event.stopPropagation()">
+    <span class="cl" onclick="document.getElementById('mo').classList.remove('act')">&times;</span>
+    <h2 id="mo-title"></h2>
+    <div class="ml" id="mo-body"></div>
+    <div class="mt" id="mo-meta"></div>
+    <div class="b" id="mo-raw"></div>
+  </div>
+</div>
 
 <script>
-const map = L.map('map').setView([5.32, -4.02], 12);
-L.tileLayer('https://{{s}}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution:'&copy; OpenStreetMap',
-  maxZoom:18
-}).addTo(map);
+// DATA
+const TARGETS = [{"name": "Bank Leumi", "swift": "LUMIILIT", "country": "Israel", "city": "Tel Aviv", "lat": 32.0853, "lon": 34.7818, "category": "banque", "accounts": [{"iban_prefix": "IL17012", "currency": "USD", "volume": 500000000}, {"iban_prefix": "IL17012", "currency": "EUR", "volume": 300000000}], "tx_count": 3}, {"name": "Bank Hapoalim", "swift": "POALILIT", "country": "Israel", "city": "Tel Aviv", "lat": 32.069, "lon": 34.79, "category": "banque", "accounts": [{"iban_prefix": "IL11012", "currency": "USD", "volume": 750000000}, {"iban_prefix": "IL11012", "currency": "CHF", "volume": 200000000}], "tx_count": 2}, {"name": "Mizrahi Tefahot", "swift": "MZABILIT", "country": "Israel", "city": "Ramat Gan", "lat": 32.0693, "lon": 34.825, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Israel Discount Bank", "swift": "IDBLILIT", "country": "Israel", "city": "Tel Aviv", "lat": 32.0625, "lon": 34.771, "category": "banque", "accounts": [{"iban_prefix": "IL34012", "currency": "USD", "volume": 250000000}], "tx_count": 2}, {"name": "First International Bank", "swift": "FIRBILIT", "country": "Israel", "city": "Tel Aviv", "lat": 32.08, "lon": 34.775, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Bank of Jerusalem", "swift": "JERSILIT", "country": "Israel", "city": "Jerusalem", "lat": 31.78, "lon": 35.22, "category": "banque", "accounts": [], "tx_count": 1}, {"name": "Union Bank of Israel", "swift": "UNONILIT", "country": "Israel", "city": "Tel Aviv", "lat": 32.075, "lon": 34.782, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Massad Bank", "swift": "MSADILIT", "country": "Israel", "city": "Jerusalem", "lat": 31.785, "lon": 35.215, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "HSBC Geneva", "swift": "HSBCCHGG", "country": "Switzerland", "city": "Geneva", "lat": 46.2022, "lon": 6.1457, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "BNP Paribas Paris", "swift": "BNPAFRPP", "country": "France", "city": "Paris", "lat": 48.8566, "lon": 2.342, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "UBS Zurich", "swift": "UBSWCHZH", "country": "Switzerland", "city": "Zurich", "lat": 47.3744, "lon": 8.541, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Standard Chartered London", "swift": "SCBLGB2L", "country": "UK", "city": "London", "lat": 51.5074, "lon": -0.1278, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Deutsche Bank Frankfurt", "swift": "DEUTDEFF", "country": "Germany", "city": "Frankfurt", "lat": 50.1109, "lon": 8.6821, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Afriland First Bank CI", "swift": "AFCICIAB", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.322, "lon": -4.0127, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Ecobank CI", "swift": "ECOCCIAB", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.325, "lon": -4.015, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "SGBCI", "swift": "SGBCICI", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.32, "lon": -4.01, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "NSIA Banque CI", "swift": "NSIACIAB", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.318, "lon": -4.013, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Bridge Bank CI", "swift": "BRIDCIAB", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.315, "lon": -4.011, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "BICICI", "swift": "BICICIAB", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.323, "lon": -4.014, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Orabank CI", "swift": "ORABCIAB", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.317, "lon": -4.012, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "role": "Commandement", "lat": 32.0741, "lon": 34.792, "status": "ACTIF", "unit": "", "signals": [{"type": "Déplacement", "desc": "Réunion cabinet de sécurité", "lat": 32.075, "lon": 34.79, "timestamp": "2026-07-10T13:46:16.843825"}, {"type": "Communication", "desc": "Contact UBS Genève identifié", "lat": 46.2022, "lon": 6.1457, "timestamp": "2026-07-10T13:46:16.843825"}], "locations": []}, {"name": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "role": "Renseignement", "lat": 32.073, "lon": 34.79, "status": "ACTIF", "unit": "", "signals": [], "locations": []}, {"name": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "role": "Communication", "lat": 32.075, "lon": 34.788, "status": "ACTIF", "unit": "", "signals": [{"type": "Briefing", "desc": "Déclaration publique sur opérations à l'étranger", "lat": null, "lon": null, "timestamp": "2026-07-10T13:46:16.843825"}], "locations": []}, {"name": "Aluf-mishne Eli Sharvit", "rank": "Chef Marine israélienne", "role": "Marine", "lat": 32.83, "lon": 34.97, "status": "ACTIF", "unit": "", "signals": [], "locations": []}, {"name": "Aluf Tomer Bar", "rank": "Chef Force aérienne", "role": "IAF", "lat": 32.0, "lon": 34.82, "status": "ACTIF", "unit": "", "signals": [], "locations": []}, {"name": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "role": "Renseignement", "lat": 32.076, "lon": 34.791, "status": "ACTIF", "unit": "", "signals": [{"type": "Opération", "desc": "Planification opération spéciale CI", "lat": null, "lon": null, "timestamp": "2026-07-10T13:46:16.843825"}], "locations": []}, {"name": "Tat-Aluf R", "rank": "Officier de liaison", "role": "Opérations spéciales", "lat": 32.078, "lon": 34.789, "status": "SURVEILLÉ", "unit": "", "signals": [{"type": "Déplacement", "desc": "Voyage Abidjan — contact banquier", "lat": 5.322, "lon": -4.0127, "timestamp": "2026-07-10T13:46:16.843825"}, {"type": "Réunion", "desc": "RDV Plateau avec conseiller financier", "lat": 5.32, "lon": -4.01, "timestamp": "2026-07-10T13:46:16.843825"}], "locations": []}, {"name": "Aluf-mishne Y", "rank": "Commandant unité 8200", "role": "Renseignement électronique", "lat": 32.07, "lon": 34.795, "status": "ACTIF", "unit": "", "signals": [], "locations": []}, {"name": "Sgan-Aluf D", "rank": "Agent Mossad — Station Europe", "role": "Renseignement", "lat": 52.52, "lon": 13.405, "status": "ACTIF", "unit": "", "signals": [], "locations": []}, {"name": "Aluf K", "rank": "Commandant régional Nord", "role": "Opérations", "lat": 33.0, "lon": 35.57, "status": "ACTIF", "unit": "", "signals": [], "locations": []}, {"name": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "role": "Diplomatie", "lat": 5.3167, "lon": -4.0167, "status": "EN MISSION", "unit": "", "signals": [{"type": "Mission", "desc": "Arrivée Abidjan — hôtel Sofitel Ivoire", "lat": 5.345, "lon": -3.978, "timestamp": "2026-07-10T13:46:16.843825"}, {"type": "Rencontre", "desc": "Contact Groupe Al-Makki — Cocody", "lat": 5.349, "lon": -3.97, "timestamp": "2026-07-10T13:46:16.843825"}], "locations": []}, {"name": "Tat-Aluf M", "rank": "Consultant sécurité — Afrique Ouest", "role": "Conseil", "lat": 5.44, "lon": -3.98, "status": "OBSERVÉ", "unit": "", "signals": [{"type": "Surveillance", "desc": "Présence Zone 4 — réunion discrète", "lat": 5.295, "lon": -3.995, "timestamp": "2026-07-10T13:46:16.843825"}], "locations": []}, {"name": "Aluf N", "rank": "Ex-responsable unité 504", "role": "Renseignement humain", "lat": 31.89, "lon": 34.81, "status": "RETRAITÉ", "unit": "", "signals": [], "locations": []}, {"codename": "CELLULE COCODY", "region": "Abidjan Cocody", "lat": 5.349, "lon": -3.97, "status": "ACTIF", "operators": [{"alias": "Omar", "role": "Chef de cellule", "risk": "HAUT"}, {"alias": "David", "role": "Officier traitant", "risk": "HAUT"}], "assets": [{"type": "véhicule", "desc": "Toyota Land Cruiser noir — immat XXXXXX"}, {"type": "comm", "desc": "Téléphone satellitaire Thuraya"}], "channels": []}, {"codename": "RÉSEAU PLATEAU", "region": "Abidjan Plateau", "lat": 5.322, "lon": -4.0127, "status": "ACTIF", "operators": [{"alias": "Yossi", "role": "Agent financier", "risk": "CRITIQUE"}, {"alias": "Rachel", "role": "Analyste", "risk": "MOYEN"}], "assets": [{"type": "bureau", "desc": "Bureau commercial couverture — Plateau"}], "channels": []}, {"codename": "CELLULE PORT", "region": "Port Bouët", "lat": 5.28, "lon": -3.98, "status": "ACTIF", "operators": [{"alias": "Michael", "role": "Logistique portuaire", "risk": "HAUT"}], "assets": [{"type": "conteneur", "desc": "Conteneur FR-4487 — équipement comm"}], "channels": []}, {"codename": "RÉSEAU NORD", "region": "Nord CI — Korhogo", "lat": 9.46, "lon": -5.63, "status": "ACTIF", "operators": [], "assets": [], "channels": []}, {"codename": "STATION BERLIN", "region": "Berlin", "lat": 52.52, "lon": 13.405, "status": "ACTIF", "operators": [], "assets": [], "channels": []}, {"codename": "CELLULE GENÈVE", "region": "Genève — Finances", "lat": 46.2022, "lon": 6.1457, "status": "ACTIF", "operators": [{"alias": "Shlomo", "role": "Gestionnaire de comptes", "risk": "CRITIQUE"}], "assets": [{"type": "banque", "desc": "Accès UBS — 5 comptes opérationnels"}], "channels": []}, {"codename": "RÉSEAU PARIS", "region": "Paris — Diplomatie", "lat": 48.8566, "lon": 2.342, "status": "ACTIF", "operators": [], "assets": [], "channels": []}, {"codename": "CELLULE MARCORY", "region": "Abidjan Marcory", "lat": 5.31, "lon": -4.005, "status": "ACTIF", "operators": [], "assets": [], "channels": []}, {"codename": "RÉSEAU YOPOUGON", "region": "Abidjan Yopougon", "lat": 5.335, "lon": -4.055, "status": "ACTIF", "operators": [], "assets": [], "channels": []}];
+const CORRIDORS = [{"from": "Bank Leumi", "to": "HSBC Geneva", "from_country": "Israel", "to_country": "Switzerland", "distance_km": 2901.5, "volume_usd": 50000000, "channel": "SWIFT", "date": "2026-06-10", "risk": "MOYEN"}, {"from": "Israel Discount Bank", "to": "UBS Zurich", "from_country": "Israel", "to_country": "Switzerland", "distance_km": 2793.4, "volume_usd": 35000000, "channel": "SWIFT", "date": "2026-06-25", "risk": "MOYEN"}, {"from": "Bank Hapoalim", "to": "Ecobank CI", "from_country": "Israel", "to_country": "Côte d'Ivoire", "distance_km": 5006.6, "volume_usd": 22500000, "channel": "SWIFT", "date": "2026-06-20", "risk": "MOYEN"}, {"from": "Bank Leumi", "to": "Afriland First Bank CI", "from_country": "Israel", "to_country": "Côte d'Ivoire", "distance_km": 5006.8, "volume_usd": 15000000, "channel": "SWIFT", "date": "2026-06-15", "risk": "MOYEN"}, {"from": "Bank Leumi", "to": "NSIA Banque CI", "from_country": "Israel", "to_country": "Côte d'Ivoire", "distance_km": 5007.1, "volume_usd": 12000000, "channel": "CRYPTO", "date": "2026-06-28", "risk": "HAUT"}, {"from": "Israel Discount Bank", "to": "SGBCI", "from_country": "Israel", "to_country": "Côte d'Ivoire", "distance_km": 5004.6, "volume_usd": 8200000, "channel": "SWIFT", "date": "2026-07-01", "risk": "MOYEN"}, {"from": "Bank Hapoalim", "to": "Bridge Bank CI", "from_country": "Israel", "to_country": "Côte d'Ivoire", "distance_km": 5007.0, "volume_usd": 5500000, "channel": "SWIFT", "date": "2026-07-05", "risk": "MOYEN"}, {"from": "Bank of Jerusalem", "to": "Orabank CI", "from_country": "Israel", "to_country": "Côte d'Ivoire", "distance_km": 5027.8, "volume_usd": 3200000, "channel": "SWIFT", "date": "2026-07-02", "risk": "MOYEN"}];
+const BG_LINKS = [{"general": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "bank": "Bank Leumi", "distance_km": 1.57, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "bank": "Bank Hapoalim", "distance_km": 0.6, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "bank": "Mizrahi Tefahot", "distance_km": 3.15, "city": "Ramat Gan", "risk": "HAUT"}, {"general": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "bank": "Israel Discount Bank", "distance_km": 2.36, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "bank": "First International Bank", "distance_km": 1.73, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "bank": "Union Bank of Israel", "distance_km": 0.95, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "bank": "Bank Leumi", "distance_km": 1.57, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "bank": "Bank Hapoalim", "distance_km": 0.44, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "bank": "Mizrahi Tefahot", "distance_km": 3.32, "city": "Ramat Gan", "risk": "HAUT"}, {"general": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "bank": "Israel Discount Bank", "distance_km": 2.14, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "bank": "First International Bank", "distance_km": 1.61, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "bank": "Union Bank of Israel", "distance_km": 0.79, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "bank": "Bank Leumi", "distance_km": 1.29, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "bank": "Bank Hapoalim", "distance_km": 0.69, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "bank": "Mizrahi Tefahot", "distance_km": 3.54, "city": "Ramat Gan", "risk": "HAUT"}, {"general": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "bank": "Israel Discount Bank", "distance_km": 2.12, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "bank": "First International Bank", "distance_km": 1.35, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "bank": "Union Bank of Israel", "distance_km": 0.57, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "bank": "Bank Leumi", "distance_km": 1.35, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "bank": "Bank Hapoalim", "distance_km": 0.78, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "bank": "Mizrahi Tefahot", "distance_km": 3.29, "city": "Ramat Gan", "risk": "HAUT"}, {"general": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "bank": "Israel Discount Bank", "distance_km": 2.41, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "bank": "First International Bank", "distance_km": 1.57, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "bank": "Union Bank of Israel", "distance_km": 0.86, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Tat-Aluf R", "rank": "Officier de liaison", "bank": "Bank Leumi", "distance_km": 1.06, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf R", "rank": "Officier de liaison", "bank": "Bank Hapoalim", "distance_km": 1.01, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf R", "rank": "Officier de liaison", "bank": "Mizrahi Tefahot", "distance_km": 3.53, "city": "Ramat Gan", "risk": "HAUT"}, {"general": "Tat-Aluf R", "rank": "Officier de liaison", "bank": "Israel Discount Bank", "distance_km": 2.42, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf R", "rank": "Officier de liaison", "bank": "First International Bank", "distance_km": 1.34, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf R", "rank": "Officier de liaison", "bank": "Union Bank of Israel", "distance_km": 0.74, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf-mishne Y", "rank": "Commandant unité 8200", "bank": "Bank Leumi", "distance_km": 2.11, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf-mishne Y", "rank": "Commandant unité 8200", "bank": "Bank Hapoalim", "distance_km": 0.48, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf-mishne Y", "rank": "Commandant unité 8200", "bank": "Mizrahi Tefahot", "distance_km": 2.83, "city": "Ramat Gan", "risk": "HAUT"}, {"general": "Aluf-mishne Y", "rank": "Commandant unité 8200", "bank": "Israel Discount Bank", "distance_km": 2.41, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf-mishne Y", "rank": "Commandant unité 8200", "bank": "First International Bank", "distance_km": 2.19, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf-mishne Y", "rank": "Commandant unité 8200", "bank": "Union Bank of Israel", "distance_km": 1.35, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "Afriland First Bank CI", "distance_km": 0.74, "city": "Abidjan", "risk": "CRITIQUE"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "Ecobank CI", "distance_km": 0.94, "city": "Abidjan", "risk": "CRITIQUE"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "SGBCI", "distance_km": 0.83, "city": "Abidjan", "risk": "CRITIQUE"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "NSIA Banque CI", "distance_km": 0.43, "city": "Abidjan", "risk": "CRITIQUE"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "Bridge Bank CI", "distance_km": 0.66, "city": "Abidjan", "risk": "CRITIQUE"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "BICICI", "distance_km": 0.76, "city": "Abidjan", "risk": "CRITIQUE"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "Orabank CI", "distance_km": 0.52, "city": "Abidjan", "risk": "CRITIQUE"}];
+const FUNDING = [{"agent": "CELLULE COCODY", "region": "Abidjan Cocody", "bank": "Afriland First Bank CI", "city": "Abidjan", "distance_km": 5.6}, {"agent": "CELLULE COCODY", "region": "Abidjan Cocody", "bank": "Ecobank CI", "city": "Abidjan", "distance_km": 5.65}, {"agent": "CELLULE COCODY", "region": "Abidjan Cocody", "bank": "SGBCI", "city": "Abidjan", "distance_km": 5.48}, {"agent": "CELLULE COCODY", "region": "Abidjan Cocody", "bank": "NSIA Banque CI", "city": "Abidjan", "distance_km": 5.88}, {"agent": "CELLULE COCODY", "region": "Abidjan Cocody", "bank": "Bridge Bank CI", "city": "Abidjan", "distance_km": 5.91}, {"agent": "CELLULE COCODY", "region": "Abidjan Cocody", "bank": "BICICI", "city": "Abidjan", "distance_km": 5.66}, {"agent": "CELLULE COCODY", "region": "Abidjan Cocody", "bank": "Orabank CI", "city": "Abidjan", "distance_km": 5.86}, {"agent": "RÉSEAU PLATEAU", "region": "Abidjan Plateau", "bank": "Afriland First Bank CI", "city": "Abidjan", "distance_km": 0.0}, {"agent": "RÉSEAU PLATEAU", "region": "Abidjan Plateau", "bank": "Ecobank CI", "city": "Abidjan", "distance_km": 0.42}, {"agent": "RÉSEAU PLATEAU", "region": "Abidjan Plateau", "bank": "SGBCI", "city": "Abidjan", "distance_km": 0.37}, {"agent": "RÉSEAU PLATEAU", "region": "Abidjan Plateau", "bank": "NSIA Banque CI", "city": "Abidjan", "distance_km": 0.45}, {"agent": "RÉSEAU PLATEAU", "region": "Abidjan Plateau", "bank": "Bridge Bank CI", "city": "Abidjan", "distance_km": 0.8}, {"agent": "RÉSEAU PLATEAU", "region": "Abidjan Plateau", "bank": "BICICI", "city": "Abidjan", "distance_km": 0.18}, {"agent": "RÉSEAU PLATEAU", "region": "Abidjan Plateau", "bank": "Orabank CI", "city": "Abidjan", "distance_km": 0.56}, {"agent": "CELLULE PORT", "region": "Port Bouët", "bank": "Afriland First Bank CI", "city": "Abidjan", "distance_km": 5.91}, {"agent": "CELLULE PORT", "region": "Port Bouët", "bank": "Ecobank CI", "city": "Abidjan", "distance_km": 6.33}, {"agent": "CELLULE PORT", "region": "Port Bouët", "bank": "SGBCI", "city": "Abidjan", "distance_km": 5.55}, {"agent": "CELLULE PORT", "region": "Port Bouët", "bank": "NSIA Banque CI", "city": "Abidjan", "distance_km": 5.59}, {"agent": "CELLULE PORT", "region": "Port Bouët", "bank": "Bridge Bank CI", "city": "Abidjan", "distance_km": 5.19}, {"agent": "CELLULE PORT", "region": "Port Bouët", "bank": "BICICI", "city": "Abidjan", "distance_km": 6.09}, {"agent": "CELLULE PORT", "region": "Port Bouët", "bank": "Orabank CI", "city": "Abidjan", "distance_km": 5.43}, {"agent": "CELLULE GENÈVE", "region": "Genève — Finances", "bank": "HSBC Geneva", "city": "Geneva", "distance_km": 0.0}, {"agent": "RÉSEAU PARIS", "region": "Paris — Diplomatie", "bank": "BNP Paribas Paris", "city": "Paris", "distance_km": 0.0}, {"agent": "CELLULE MARCORY", "region": "Abidjan Marcory", "bank": "Afriland First Bank CI", "city": "Abidjan", "distance_km": 1.58}, {"agent": "CELLULE MARCORY", "region": "Abidjan Marcory", "bank": "Ecobank CI", "city": "Abidjan", "distance_km": 2.0}, {"agent": "CELLULE MARCORY", "region": "Abidjan Marcory", "bank": "SGBCI", "city": "Abidjan", "distance_km": 1.24}, {"agent": "CELLULE MARCORY", "region": "Abidjan Marcory", "bank": "NSIA Banque CI", "city": "Abidjan", "distance_km": 1.26}, {"agent": "CELLULE MARCORY", "region": "Abidjan Marcory", "bank": "Bridge Bank CI", "city": "Abidjan", "distance_km": 0.87}, {"agent": "CELLULE MARCORY", "region": "Abidjan Marcory", "bank": "BICICI", "city": "Abidjan", "distance_km": 1.76}, {"agent": "CELLULE MARCORY", "region": "Abidjan Marcory", "bank": "Orabank CI", "city": "Abidjan", "distance_km": 1.1}, {"agent": "RÉSEAU YOPOUGON", "region": "Abidjan Yopougon", "bank": "Afriland First Bank CI", "city": "Abidjan", "distance_km": 4.9}, {"agent": "RÉSEAU YOPOUGON", "region": "Abidjan Yopougon", "bank": "Ecobank CI", "city": "Abidjan", "distance_km": 4.57}, {"agent": "RÉSEAU YOPOUGON", "region": "Abidjan Yopougon", "bank": "SGBCI", "city": "Abidjan", "distance_km": 5.25}, {"agent": "RÉSEAU YOPOUGON", "region": "Abidjan Yopougon", "bank": "NSIA Banque CI", "city": "Abidjan", "distance_km": 5.02}, {"agent": "RÉSEAU YOPOUGON", "region": "Abidjan Yopougon", "bank": "Bridge Bank CI", "city": "Abidjan", "distance_km": 5.36}, {"agent": "RÉSEAU YOPOUGON", "region": "Abidjan Yopougon", "bank": "BICICI", "city": "Abidjan", "distance_km": 4.73}, {"agent": "RÉSEAU YOPOUGON", "region": "Abidjan Yopougon", "bank": "Orabank CI", "city": "Abidjan", "distance_km": 5.16}];
 
-const targets = [{"name": "Bank Leumi", "swift": "LUMIILIT", "country": "Israel", "city": "Tel Aviv", "lat": 32.0853, "lon": 34.7818, "category": "banque", "accounts": [{"iban_prefix": "IL17012", "currency": "USD", "volume": 500000000}, {"iban_prefix": "IL17012", "currency": "EUR", "volume": 300000000}], "tx_count": 3}, {"name": "Bank Hapoalim", "swift": "POALILIT", "country": "Israel", "city": "Tel Aviv", "lat": 32.069, "lon": 34.79, "category": "banque", "accounts": [{"iban_prefix": "IL11012", "currency": "USD", "volume": 750000000}, {"iban_prefix": "IL11012", "currency": "CHF", "volume": 200000000}], "tx_count": 2}, {"name": "Mizrahi Tefahot", "swift": "MZABILIT", "country": "Israel", "city": "Ramat Gan", "lat": 32.0693, "lon": 34.825, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Israel Discount Bank", "swift": "IDBLILIT", "country": "Israel", "city": "Tel Aviv", "lat": 32.0625, "lon": 34.771, "category": "banque", "accounts": [{"iban_prefix": "IL34012", "currency": "USD", "volume": 250000000}], "tx_count": 2}, {"name": "First International Bank", "swift": "FIRBILIT", "country": "Israel", "city": "Tel Aviv", "lat": 32.08, "lon": 34.775, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Bank of Jerusalem", "swift": "JERSILIT", "country": "Israel", "city": "Jerusalem", "lat": 31.78, "lon": 35.22, "category": "banque", "accounts": [], "tx_count": 1}, {"name": "Union Bank of Israel", "swift": "UNONILIT", "country": "Israel", "city": "Tel Aviv", "lat": 32.075, "lon": 34.782, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Massad Bank", "swift": "MSADILIT", "country": "Israel", "city": "Jerusalem", "lat": 31.785, "lon": 35.215, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "HSBC Geneva", "swift": "HSBCCHGG", "country": "Switzerland", "city": "Geneva", "lat": 46.2022, "lon": 6.1457, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "BNP Paribas Paris", "swift": "BNPAFRPP", "country": "France", "city": "Paris", "lat": 48.8566, "lon": 2.342, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "UBS Zurich", "swift": "UBSWCHZH", "country": "Switzerland", "city": "Zurich", "lat": 47.3744, "lon": 8.541, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Standard Chartered London", "swift": "SCBLGB2L", "country": "UK", "city": "London", "lat": 51.5074, "lon": -0.1278, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Deutsche Bank Frankfurt", "swift": "DEUTDEFF", "country": "Germany", "city": "Frankfurt", "lat": 50.1109, "lon": 8.6821, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Afriland First Bank CI", "swift": "AFCICIAB", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.322, "lon": -4.0127, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Ecobank CI", "swift": "ECOCCIAB", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.325, "lon": -4.015, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "SGBCI", "swift": "SGBCICI", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.32, "lon": -4.01, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "NSIA Banque CI", "swift": "NSIACIAB", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.318, "lon": -4.013, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Bridge Bank CI", "swift": "BRIDCIAB", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.315, "lon": -4.011, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "BICICI", "swift": "BICICIAB", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.323, "lon": -4.014, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Orabank CI", "swift": "ORABCIAB", "country": "Côte d'Ivoire", "city": "Abidjan", "lat": 5.317, "lon": -4.012, "category": "banque", "accounts": [], "tx_count": 0}, {"name": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "role": "Commandement", "lat": 32.0741, "lon": 34.792, "status": "ACTIF", "unit": "", "signals": [{"type": "Déplacement", "desc": "Réunion cabinet de sécurité", "lat": 32.075, "lon": 34.79, "timestamp": "2026-07-10T13:46:16.843825"}, {"type": "Communication", "desc": "Contact UBS Genève identifié", "lat": 46.2022, "lon": 6.1457, "timestamp": "2026-07-10T13:46:16.843825"}], "locations": []}, {"name": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "role": "Renseignement", "lat": 32.073, "lon": 34.79, "status": "ACTIF", "unit": "", "signals": [], "locations": []}, {"name": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "role": "Communication", "lat": 32.075, "lon": 34.788, "status": "ACTIF", "unit": "", "signals": [{"type": "Briefing", "desc": "Déclaration publique sur opérations à l'étranger", "lat": null, "lon": null, "timestamp": "2026-07-10T13:46:16.843825"}], "locations": []}, {"name": "Aluf-mishne Eli Sharvit", "rank": "Chef Marine israélienne", "role": "Marine", "lat": 32.83, "lon": 34.97, "status": "ACTIF", "unit": "", "signals": [], "locations": []}, {"name": "Aluf Tomer Bar", "rank": "Chef Force aérienne", "role": "IAF", "lat": 32.0, "lon": 34.82, "status": "ACTIF", "unit": "", "signals": [], "locations": []}, {"name": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "role": "Renseignement", "lat": 32.076, "lon": 34.791, "status": "ACTIF", "unit": "", "signals": [{"type": "Opération", "desc": "Planification opération spéciale CI", "lat": null, "lon": null, "timestamp": "2026-07-10T13:46:16.843825"}], "locations": []}, {"name": "Tat-Aluf R", "rank": "Officier de liaison", "role": "Opérations spéciales", "lat": 32.078, "lon": 34.789, "status": "SURVEILLÉ", "unit": "", "signals": [{"type": "Déplacement", "desc": "Voyage Abidjan — contact banquier", "lat": 5.322, "lon": -4.0127, "timestamp": "2026-07-10T13:46:16.843825"}, {"type": "Réunion", "desc": "RDV Plateau avec conseiller financier", "lat": 5.32, "lon": -4.01, "timestamp": "2026-07-10T13:46:16.843825"}], "locations": []}, {"name": "Aluf-mishne Y", "rank": "Commandant unité 8200", "role": "Renseignement électronique", "lat": 32.07, "lon": 34.795, "status": "ACTIF", "unit": "", "signals": [], "locations": []}, {"name": "Sgan-Aluf D", "rank": "Agent Mossad — Station Europe", "role": "Renseignement", "lat": 52.52, "lon": 13.405, "status": "ACTIF", "unit": "", "signals": [], "locations": []}, {"name": "Aluf K", "rank": "Commandant régional Nord", "role": "Opérations", "lat": 33.0, "lon": 35.57, "status": "ACTIF", "unit": "", "signals": [], "locations": []}, {"name": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "role": "Diplomatie", "lat": 5.3167, "lon": -4.0167, "status": "EN MISSION", "unit": "", "signals": [{"type": "Mission", "desc": "Arrivée Abidjan — hôtel Sofitel Ivoire", "lat": 5.345, "lon": -3.978, "timestamp": "2026-07-10T13:46:16.843825"}, {"type": "Rencontre", "desc": "Contact Groupe Al-Makki — Cocody", "lat": 5.349, "lon": -3.97, "timestamp": "2026-07-10T13:46:16.843825"}], "locations": []}, {"name": "Tat-Aluf M", "rank": "Consultant sécurité — Afrique Ouest", "role": "Conseil", "lat": 5.44, "lon": -3.98, "status": "OBSERVÉ", "unit": "", "signals": [{"type": "Surveillance", "desc": "Présence Zone 4 — réunion discrète", "lat": 5.295, "lon": -3.995, "timestamp": "2026-07-10T13:46:16.843825"}], "locations": []}, {"name": "Aluf N", "rank": "Ex-responsable unité 504", "role": "Renseignement humain", "lat": 31.89, "lon": 34.81, "status": "RETRAITÉ", "unit": "", "signals": [], "locations": []}, {"codename": "CELLULE COCODY", "region": "Abidjan Cocody", "lat": 5.349, "lon": -3.97, "status": "ACTIF", "operators": [{"alias": "Omar", "role": "Chef de cellule", "risk": "HAUT"}, {"alias": "David", "role": "Officier traitant", "risk": "HAUT"}], "assets": [{"type": "véhicule", "desc": "Toyota Land Cruiser noir — immat XXXXXX"}, {"type": "comm", "desc": "Téléphone satellitaire Thuraya"}], "channels": []}, {"codename": "RÉSEAU PLATEAU", "region": "Abidjan Plateau", "lat": 5.322, "lon": -4.0127, "status": "ACTIF", "operators": [{"alias": "Yossi", "role": "Agent financier", "risk": "CRITIQUE"}, {"alias": "Rachel", "role": "Analyste", "risk": "MOYEN"}], "assets": [{"type": "bureau", "desc": "Bureau commercial couverture — Plateau"}], "channels": []}, {"codename": "CELLULE PORT", "region": "Port Bouët", "lat": 5.28, "lon": -3.98, "status": "ACTIF", "operators": [{"alias": "Michael", "role": "Logistique portuaire", "risk": "HAUT"}], "assets": [{"type": "conteneur", "desc": "Conteneur FR-4487 — équipement comm"}], "channels": []}, {"codename": "RÉSEAU NORD", "region": "Nord CI — Korhogo", "lat": 9.46, "lon": -5.63, "status": "ACTIF", "operators": [], "assets": [], "channels": []}, {"codename": "STATION BERLIN", "region": "Berlin", "lat": 52.52, "lon": 13.405, "status": "ACTIF", "operators": [], "assets": [], "channels": []}, {"codename": "CELLULE GENÈVE", "region": "Genève — Finances", "lat": 46.2022, "lon": 6.1457, "status": "ACTIF", "operators": [{"alias": "Shlomo", "role": "Gestionnaire de comptes", "risk": "CRITIQUE"}], "assets": [{"type": "banque", "desc": "Accès UBS — 5 comptes opérationnels"}], "channels": []}, {"codename": "RÉSEAU PARIS", "region": "Paris — Diplomatie", "lat": 48.8566, "lon": 2.342, "status": "ACTIF", "operators": [], "assets": [], "channels": []}, {"codename": "CELLULE MARCORY", "region": "Abidjan Marcory", "lat": 5.31, "lon": -4.005, "status": "ACTIF", "operators": [], "assets": [], "channels": []}, {"codename": "RÉSEAU YOPOUGON", "region": "Abidjan Yopougon", "lat": 5.335, "lon": -4.055, "status": "ACTIF", "operators": [], "assets": [], "channels": []}];
-const corridors = [{"from": "Bank Leumi", "to": "HSBC Geneva", "from_country": "Israel", "to_country": "Switzerland", "distance_km": 2901.5, "volume_usd": 50000000, "channel": "SWIFT", "date": "2026-06-10", "risk": "MOYEN"}, {"from": "Israel Discount Bank", "to": "UBS Zurich", "from_country": "Israel", "to_country": "Switzerland", "distance_km": 2793.4, "volume_usd": 35000000, "channel": "SWIFT", "date": "2026-06-25", "risk": "MOYEN"}, {"from": "Bank Hapoalim", "to": "Ecobank CI", "from_country": "Israel", "to_country": "Côte d'Ivoire", "distance_km": 5006.6, "volume_usd": 22500000, "channel": "SWIFT", "date": "2026-06-20", "risk": "MOYEN"}, {"from": "Bank Leumi", "to": "Afriland First Bank CI", "from_country": "Israel", "to_country": "Côte d'Ivoire", "distance_km": 5006.8, "volume_usd": 15000000, "channel": "SWIFT", "date": "2026-06-15", "risk": "MOYEN"}, {"from": "Bank Leumi", "to": "NSIA Banque CI", "from_country": "Israel", "to_country": "Côte d'Ivoire", "distance_km": 5007.1, "volume_usd": 12000000, "channel": "CRYPTO", "date": "2026-06-28", "risk": "HAUT"}, {"from": "Israel Discount Bank", "to": "SGBCI", "from_country": "Israel", "to_country": "Côte d'Ivoire", "distance_km": 5004.6, "volume_usd": 8200000, "channel": "SWIFT", "date": "2026-07-01", "risk": "MOYEN"}, {"from": "Bank Hapoalim", "to": "Bridge Bank CI", "from_country": "Israel", "to_country": "Côte d'Ivoire", "distance_km": 5007.0, "volume_usd": 5500000, "channel": "SWIFT", "date": "2026-07-05", "risk": "MOYEN"}, {"from": "Bank of Jerusalem", "to": "Orabank CI", "from_country": "Israel", "to_country": "Côte d'Ivoire", "distance_km": 5027.8, "volume_usd": 3200000, "channel": "SWIFT", "date": "2026-07-02", "risk": "MOYEN"}];
-const bgLinks = [{"general": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "bank": "Bank Leumi", "distance_km": 1.57, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "bank": "Bank Hapoalim", "distance_km": 0.6, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "bank": "Mizrahi Tefahot", "distance_km": 3.15, "city": "Ramat Gan", "risk": "HAUT"}, {"general": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "bank": "Israel Discount Bank", "distance_km": 2.36, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "bank": "First International Bank", "distance_km": 1.73, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf (Général) Aviv Kochavi", "rank": "Ramatkal (Chef d'état-major)", "bank": "Union Bank of Israel", "distance_km": 0.95, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "bank": "Bank Leumi", "distance_km": 1.57, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "bank": "Bank Hapoalim", "distance_km": 0.44, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "bank": "Mizrahi Tefahot", "distance_km": 3.32, "city": "Ramat Gan", "risk": "HAUT"}, {"general": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "bank": "Israel Discount Bank", "distance_km": 2.14, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "bank": "First International Bank", "distance_km": 1.61, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf Herzi Halevi", "rank": "Ramatkal adjoint", "bank": "Union Bank of Israel", "distance_km": 0.79, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "bank": "Bank Leumi", "distance_km": 1.29, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "bank": "Bank Hapoalim", "distance_km": 0.69, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "bank": "Mizrahi Tefahot", "distance_km": 3.54, "city": "Ramat Gan", "risk": "HAUT"}, {"general": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "bank": "Israel Discount Bank", "distance_km": 2.12, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "bank": "First International Bank", "distance_km": 1.35, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf (Général de brigade) Daniel Hagari", "rank": "Porte-parole Tsahal", "bank": "Union Bank of Israel", "distance_km": 0.57, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "bank": "Bank Leumi", "distance_km": 1.35, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "bank": "Bank Hapoalim", "distance_km": 0.78, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "bank": "Mizrahi Tefahot", "distance_km": 3.29, "city": "Ramat Gan", "risk": "HAUT"}, {"general": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "bank": "Israel Discount Bank", "distance_km": 2.41, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "bank": "First International Bank", "distance_km": 1.57, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf Aharon Haliva", "rank": "Chef Aman (Renseignement)", "bank": "Union Bank of Israel", "distance_km": 0.86, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Tat-Aluf R", "rank": "Officier de liaison", "bank": "Bank Leumi", "distance_km": 1.06, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf R", "rank": "Officier de liaison", "bank": "Bank Hapoalim", "distance_km": 1.01, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf R", "rank": "Officier de liaison", "bank": "Mizrahi Tefahot", "distance_km": 3.53, "city": "Ramat Gan", "risk": "HAUT"}, {"general": "Tat-Aluf R", "rank": "Officier de liaison", "bank": "Israel Discount Bank", "distance_km": 2.42, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf R", "rank": "Officier de liaison", "bank": "First International Bank", "distance_km": 1.34, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Tat-Aluf R", "rank": "Officier de liaison", "bank": "Union Bank of Israel", "distance_km": 0.74, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf-mishne Y", "rank": "Commandant unité 8200", "bank": "Bank Leumi", "distance_km": 2.11, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf-mishne Y", "rank": "Commandant unité 8200", "bank": "Bank Hapoalim", "distance_km": 0.48, "city": "Tel Aviv", "risk": "CRITIQUE"}, {"general": "Aluf-mishne Y", "rank": "Commandant unité 8200", "bank": "Mizrahi Tefahot", "distance_km": 2.83, "city": "Ramat Gan", "risk": "HAUT"}, {"general": "Aluf-mishne Y", "rank": "Commandant unité 8200", "bank": "Israel Discount Bank", "distance_km": 2.41, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf-mishne Y", "rank": "Commandant unité 8200", "bank": "First International Bank", "distance_km": 2.19, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf-mishne Y", "rank": "Commandant unité 8200", "bank": "Union Bank of Israel", "distance_km": 1.35, "city": "Tel Aviv", "risk": "HAUT"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "Afriland First Bank CI", "distance_km": 0.74, "city": "Abidjan", "risk": "CRITIQUE"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "Ecobank CI", "distance_km": 0.94, "city": "Abidjan", "risk": "CRITIQUE"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "SGBCI", "distance_km": 0.83, "city": "Abidjan", "risk": "CRITIQUE"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "NSIA Banque CI", "distance_km": 0.43, "city": "Abidjan", "risk": "CRITIQUE"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "Bridge Bank CI", "distance_km": 0.66, "city": "Abidjan", "risk": "CRITIQUE"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "BICICI", "distance_km": 0.76, "city": "Abidjan", "risk": "CRITIQUE"}, {"general": "Aluf-mishne G", "rank": "Attaché militaire Afrique", "bank": "Orabank CI", "distance_km": 0.52, "city": "Abidjan", "risk": "CRITIQUE"}];
-
-// ICONS
-const bankIcon = L.divIcon({html:'<div style="background:#000;color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.3)">B</div>',iconSize:[18,18],iconAnchor:[9,9]});
-const genIcon = L.divIcon({html:'<div style="background:#c00;color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.3)">G</div>',iconSize:[18,18],iconAnchor:[9,9]});
-const agentIcon = L.divIcon({html:'<div style="background:#333;color:#fff;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.3)">A</div>',iconSize:[16,16],iconAnchor:[8,8]});
-
-// MARQUEURS
-targets.forEach(t => {
-  let icon = bankIcon;
+// MAP
+const map = L.map('m').setView([5.32, -4.02], 12);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution:''}).addTo(map);
+const bi = L.divIcon({html:'<div style="background:#000;color:#fff;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;border:2px solid #fff">B</div>',iconSize:[16,16],iconAnchor:[8,8]});
+const gi = L.divIcon({html:'<div style="background:#c00;color:#fff;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;border:2px solid #fff">G</div>',iconSize:[16,16],iconAnchor:[8,8]});
+const ai = L.divIcon({html:'<div style="background:#333;color:#fff;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;border:2px solid #fff">A</div>',iconSize:[14,14],iconAnchor:[7,7]});
+const markers = [];
+TARGETS.forEach(t => {
+  if (!t.lat || t.lat < -90) return;
+  let icon = bi;
   let label = t.name || t.codename || '';
-  let popup = label;
-  if (t.swift) { icon = bankIcon; popup = label + ' (' + t.country + ')'; }
-  else if (t.rank) { icon = genIcon; popup = label + ' - ' + (t.rank||''); }
-  else if (t.codename) { icon = agentIcon; popup = label; }
-  if (t.lat && t.lon && t.lat > -90) {
-    L.marker([t.lat, t.lon], {icon}).addTo(map).bindPopup(popup);
+  if (t.rank) icon = gi;
+  else if (t.codename) icon = ai;
+  const m = L.marker([t.lat, t.lon], {icon}).addTo(map).bindPopup(label);
+  markers.push({m, t});
+});
+
+// CORRIDOR LINES
+CORRIDORS.forEach(c => {
+  let ft = TARGETS.find(t => t.name === c.from);
+  let tt = TARGETS.find(t => t.name === c.to);
+  if (ft && tt && ft.lat && tt.lat) {
+    L.polyline([[ft.lat, ft.lon], [tt.lat, tt.lon]], {
+      color: '#c00', weight: 1.5, opacity: 0.4, dashArray: '5,5'
+    }).addTo(map);
   }
 });
 
-// FLECHES CORRIDORS
-const style = document.createElement('style');
-style.textContent = '.polyline-corridor{stroke:#c00;stroke-width:2;stroke-opacity:.6;stroke-dasharray:6,4}';
-document.head.appendChild(style);
+// FORMATTERS
+const fmt = {
+  vol: v => '$' + v.toLocaleString(),
+  dist: d => d.toFixed(1) + ' km',
+  date: d => d || '',
+  nm: n => n.replace(/Aluf.*?\)/g,'Gén.').replace(/Tat-Aluf.*?\)/g,'Gén.Brg.').replace(/Sgan-Aluf.*?\)/g,'Col.').replace(/Aluf-mishne.*?\)/g,'Gén.Div.').replace(/Ramatkal|Ramatkal adjoint|Chef.*/g,'').trim()
+};
 
-let drawn = new Set();
-corridors.forEach(c => {
-  const key = c.from + '_' + c.to;
-  if (drawn.has(key)) return;
-  drawn.add(key);
-  // Find coords
-  let fromT = targets.find(t => t.name === c.from);
-  let toT = targets.find(t => t.name === c.to);
-  if (fromT && toT && fromT.lat && toT.lat) {
-    L.polyline([[fromT.lat, fromT.lon], [toT.lat, toT.lon]], {
-      color: '#c00', weight: 1.5, opacity: 0.5, dashArray: '5,5'
-    }).addTo(map).bindPopup('$' + c.volume_usd.toLocaleString() + ' · ' + c.channel);
+// RENDER
+function render() {
+  const q = document.getElementById('q').value.toLowerCase();
+  const f = document.getElementById('ft').value;
+
+  function match(txt) {
+    if (!q) return true;
+    return (txt||'').toLowerCase().includes(q);
   }
-});
+
+  // CORRIDORS
+  let cr = CORRIDORS.filter(c => {
+    if (f === 'corridor') return true;
+    if (f === 'ci') return c.to_country.includes('Ivoire');
+    if (f === 'critique') return c.risk === 'HAUT' || c.to_country.includes('Ivoire');
+    if (f === 'crypto') return c.channel === 'CRYPTO';
+    if (f === 'banque' || f === 'general' || f === 'agent') return false;
+    return true;
+  }).filter(c => match(c.from + c.to + c.channel));
+  document.getElementById('cr-list').innerHTML = cr.map(c => {
+    const isCi = c.to_country.includes('Ivoire');
+    const isCrypto = c.channel === 'CRYPTO';
+    const cls = (isCi||isCrypto) ? 'crc' : '';
+    return '<div class="cr ' + cls + '" onclick="showCr(' + JSON.stringify(c).replace(/"/g,'&quot;') + ')"><div class="rn">' + c.from + ' (' + c.from_country.slice(0,3) + ') → ' + c.to + ' (' + c.to_country.slice(0,3) + ')</div><div class="am">' + fmt.vol(c.volume_usd) + '</div><div class="md">' + c.channel + ' · ' + fmt.dist(c.distance_km) + '</div>' + (isCi ? '<div class="wa">Corridor CI</div>' : '') + (isCrypto ? '<div class="wa">CRYPTO</div>' : '') + '</div>';
+  }).join('');
+
+  // GENERAUX
+  let gn = TARGETS.filter(t => t.rank);
+  if (f === 'general') {}
+  else if (f === 'ci') gn = gn.filter(t => JSON.stringify(t.signals).includes('Abidjan') || t.status === 'EN MISSION');
+  else if (f === 'critique') gn = gn.filter(t => t.status === 'EN MISSION' || t.status === 'SURVEILLÉ');
+  else if (f && ['banque','agent','corridor','crypto'].includes(f)) gn = [];
+  gn = gn.filter(t => match(t.name + t.rank + t.role));
+  document.getElementById('gen-list').innerHTML = gn.map(g => {
+    const sigs = (g.signals||[]).map(s => s.desc).join(' · ').slice(0,80);
+    const inCi = JSON.stringify(g.signals).includes('Abidjan') || g.status === 'EN MISSION';
+    const sty = inCi ? 'style="border-left:3px solid #c00"' : '';
+    const tg = inCi ? 'tgr' : 'tgg';
+    return '<div class="cd" ' + sty + ' onclick="showGen(' + JSON.stringify(g).replace(/"/g,'&quot;') + ')"><div class="th"><div class="nm">' + (g.name||'').slice(0,30) + '</div><span class="tg ' + tg + '">' + (g.rank||'').slice(0,12) + '</span></div><div class="d">' + (g.role||'') + '</div><div class="x">' + (sigs||g.status) + '</div></div>';
+  }).join('');
+
+  // AGENTS
+  let ag = TARGETS.filter(t => t.codename);
+  if (f === 'agent') {}
+  else if (f && ['banque','general','corridor','crypto','ci'].includes(f)) ag = [];
+  ag = ag.filter(t => match(t.codename + t.region));
+  document.getElementById('agent-list').innerHTML = ag.map(a => {
+    const ops = (a.operators||[]).map(o => o.alias).join(' · ');
+    return '<div class="cd" onclick="showAgent(' + JSON.stringify(a).replace(/"/g,'&quot;') + ')"><div class="th"><div class="nm">' + (a.codename||'') + '</div><span class="tg tga">' + (a.region||'').slice(0,10) + '</span></div><div class="d">' + ops + '</div></div>';
+  }).join('');
+
+  // BANKS
+  let bk = TARGETS.filter(t => t.swift);
+  if (f === 'banque') {}
+  else if (f && ['general','agent','corridor','crypto','ci'].includes(f)) bk = [];
+  bk = bk.filter(t => match(t.name + t.country + t.city));
+  document.getElementById('bank-list').innerHTML = bk.map(b => {
+    const accts = (b.accounts||[]).map(a => a.currency + ' $' + (a.volume/1e6).toFixed(0)+'M').join(' · ');
+    return '<div class="cd" onclick="showBank(' + JSON.stringify(b).replace(/"/g,'&quot;') + ')"><div class="th"><div class="nm">' + (b.name||'').slice(0,25) + '</div><span class="tg tgb">' + (b.city||'').slice(0,10) + '</span></div><div class="d">' + b.country + ' · ' + b.swift + '</div><div class="x">' + accts + '</div></div>';
+  }).join('');
+
+  // BG LINKS
+  let bl = BG_LINKS;
+  if (f === 'critique') bl = bl.filter(l => l.risk === 'CRITIQUE');
+  else if (f === 'ci') bl = bl.filter(l => ['Afriland','Ecobank','SGBCI','NSIA','Bridge','BICICI','Orabank'].includes(l.bank));
+  else if (f && ['banque','general','agent','corridor','crypto'].includes(f)) bl = [];
+  bl = bl.filter(l => match(l.general + l.bank + l.city));
+  document.getElementById('bgl-list').innerHTML = bl.map(l => {
+    return '<div class="cd bgl"><div class="th"><div class="nm">' + (l.general||'').slice(0,25) + '</div><span class="tg ' + (l.risk==='CRITIQUE'?'tgr':'tgg') + '">' + l.risk + '</span></div><div class="d">→ ' + l.bank + ' (' + l.city + ')</div><div class="mt">' + fmt.dist(l.distance_km) + '</div></div>';
+  }).join('');
+}
+
+// MODAL SHOW
+function showCr(c) {
+  document.getElementById('mo-title').textContent = c.from + ' → ' + c.to;
+  document.getElementById('mo-body').innerHTML = '<b>Canal:</b> ' + c.channel + '<br><b>Volume:</b> ' + fmt.vol(c.volume_usd) + '<br><b>Distance:</b> ' + fmt.dist(c.distance_km) + '<br><b>Date:</b> ' + c.date + '<br><b>Risque:</b> ' + c.risk;
+  document.getElementById('mo-meta').textContent = c.from_country + ' → ' + c.to_country;
+  document.getElementById('mo-raw').textContent = JSON.stringify(c, null, 2);
+  document.getElementById('mo').classList.add('act');
+}
+function showGen(g) {
+  document.getElementById('mo-title').textContent = g.name || '';
+  const sigs = (g.signals||[]).map(s => '• ' + s.desc + (s.lat ? ' ['+s.lat.toFixed(2)+','+s.lon.toFixed(2)+']' : '')).join('<br>');
+  const locs = (g.locations||[]).map(l => '• ' + l.date + ' : ' + (l.desc||'') + ' ['+l.lat.toFixed(2)+','+l.lon.toFixed(2)+']').join('<br>');
+  document.getElementById('mo-body').innerHTML = '<b>Grade:</b> ' + g.rank + '<br><b>Rôle:</b> ' + g.role + '<br><b>Statut:</b> ' + g.status + '<br><br><b>Signaux:</b><br>' + (sigs||'Aucun') + '<br><br><b>Positions:</b><br>' + (locs||'Aucune');
+  document.getElementById('mo-meta').textContent = g.rank + ' · ' + g.status;
+  document.getElementById('mo-raw').textContent = JSON.stringify(g, null, 2);
+  document.getElementById('mo').classList.add('act');
+}
+function showAgent(a) {
+  document.getElementById('mo-title').textContent = a.codename;
+  const ops = (a.operators||[]).map(o => '• ' + o.alias + ' (' + o.role + ') [' + o.risk + ']').join('<br>');
+  const assets = (a.assets||[]).map(as => '• ' + as.desc).join('<br>');
+  document.getElementById('mo-body').innerHTML = '<b>Région:</b> ' + a.region + '<br><b>Statut:</b> ' + a.status + '<br><br><b>Opérateurs:</b><br>' + (ops||'Aucun') + '<br><br><b>Actifs:</b><br>' + (assets||'Aucun');
+  document.getElementById('mo-meta').textContent = a.region + ' · ' + a.status;
+  document.getElementById('mo-raw').textContent = JSON.stringify(a, null, 2);
+  document.getElementById('mo').classList.add('act');
+}
+function showBank(b) {
+  document.getElementById('mo-title').textContent = b.name;
+  const accts = (b.accounts||[]).map(a => '• ' + a.currency + ' $' + a.volume.toLocaleString()).join('<br>');
+  const txs = b.tx_count ? 'Transactions: ' + b.tx_count : '';
+  document.getElementById('mo-body').innerHTML = '<b>SWIFT:</b> ' + b.swift + '<br><b>Pays:</b> ' + b.country + '<br><b>Ville:</b> ' + b.city + '<br><b>Catégorie:</b> ' + b.category + '<br><br><b>Comptes:</b><br>' + (accts||'Aucun') + '<br>' + txs;
+  document.getElementById('mo-meta').textContent = b.country + ' · ' + b.swift;
+  document.getElementById('mo-raw').textContent = JSON.stringify(b, null, 2);
+  document.getElementById('mo').classList.add('act');
+}
+
+// TABS
+function sw(i) {
+  document.querySelectorAll('.tab').forEach((t,idx) => t.classList.toggle('act', idx===i));
+  document.querySelectorAll('.sec').forEach((s,idx) => s.classList.toggle('act', idx===i));
+}
+
+// FILTER
+function filt() { render(); }
+
+// INIT
+render();
 </script>
 
 </body>
